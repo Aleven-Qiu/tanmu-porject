@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>123123</title>
+    <meta name="viewport" content="width=device-width,user-scalable=no" /> 
+    <link rel="stylesheet" href="css/style.min.css" />
+    <style type="text/css">
+    html,body {
+        height: 100%;
+    }
+    #wrapper {
+        height: 100%;
+    }
+    .img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 7rem;
+        height: 7rem;
+        margin: -3.5rem 0 0 -3.5rem;
+    }
+    .title {
+        font-size: 0.8rem;
+        padding:1rem;
+        line-height: 1.5;
+        color: #ff9900;
+        margin-top: 2rem;
+    }
+    #footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 1.5rem;
+        background: #e6e2e2;
+        box-sizing:border-box;
+        padding:0.3rem;
+        vertical-align: top;
+        border-top: 1px solid #ccc;
+    }
+    #text {
+        height: 0.9rem;
+        width: 75%;
+        float: left;
+        border:1px solid #ddd;
+        font-size: 0.3rem;
+    }
+    .submit {
+        position: absolute;
+        right: 0.3rem;
+        top: 0.3rem;
+        width: 17%;
+        background: #0074bc;
+        color: #fff;
+        line-height: 0.9rem;
+        font-size: 0.5rem;
+        text-decoration: none;
+        text-align: center;
+        
+    }
+    .hide {
+        display: none;
+        background: #ccc;
+        color: #000;
+        z-index: 999;
+    }
+    .upgoto {
+        position: absolute;
+        left: 50%;
+        bottom: -40%;
+        width: 1.2rem;
+        height: 5rem;
+        animation:mover 5s infinite;
+        -webkit-animation:mover 5s infinite;   
+        -o-animation:mover 5s;
+        -moz-animation:mover 5s infinite;
+        z-index: 999;
+        color: #ffe7ae;
+    }
+    .upgoto span{
+        font-size: 1rem;
+    }
+    @keyframes mover{
+        0% {bottom: -40%;}
+        100% {bottom: 150%;}
+    }
+    @-webkit-keyframes mover{
+        0% {bottom: -40%;}
+        100% {bottom: 150%;}
+    }
+    @-moz-keyframes mover{
+        0% {bottom: -40%;}
+        100% {bottom: 150%;}
+    }
+    @-o-keyframes mover{
+        0% {bottom: -40%;}
+        100% {bottom: 150%;}
+    }
+    #propbox {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.4);
+        display: none;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+        <img src="images/default_big_img.png" class="img">
+        <p class="title">欢迎来到启明星吐槽室，什么都别说，来一发先！！！</p>
+    </div>
+    <div id="footer">
+        <textarea id="text"></textarea>
+        <a href="javascript:;" id="submit" class="submit">发射</a>
+        <a href="javascript:;" class="submit hide">发射</a>
+    </div>
+    <div id="propbox"></div>
+<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+<script src="js/CommentCoreLibrary.js"></script>
+<script type="text/javascript" src="js/datajson.json"></script>
+<script type="text/javascript">
+ var iWidth=document.documentElement.clientWidth;
+    document.getElementsByTagName("html")[0].style.fontSize=iWidth/10+"px";
+$(function(){
+    $('#submit').on('click',function(){
+        var data = $('#text').val();
+        if(data.length >30) {
+            alert('最多只能输入30个字');
+            return false;
+        }
+        $.ajax({
+            url:'https://test2.dms.morning-star.cn/nyp/api/message/sendMsg',
+            data:{msg:data},
+            success:function(data){
+                $('#text').val('');
+                addhtml();
+                $('#submit').hide();
+                $('.hide').show();
+                $('#propbox').show();
+                setTimeout(function(){
+                    $('#submit').show();
+                    $('.hide').hide();
+                    $('.upgoto').remove();
+                    $('#propbox').hide();
+                },3000);
+            }
+        })
+    });
+
+    function addhtml(){
+        var html = "";
+        html += '<div class="upgoto"><img src="images/uppic.png"><span>发送成功</span></div>';
+        $('body').append(html);
+    }
+
+}); 
+    
+</script>
+  </body>
+</html>
